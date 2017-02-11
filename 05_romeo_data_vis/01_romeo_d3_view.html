@@ -29,18 +29,18 @@
         .data(romeo_data)
         .enter()
           .append("div")
-          .style('width', function(d) {
+          .style('margin-left', function(d) {
             if (d['line_polarity'] < 0) {
-              return Math.abs(d['line_polarity'])*100 + 'px;'
+              return 500 - (Math.abs(d['line_polarity'])*100) + 'px';
             } else {
-              return d['line_polarity']*100 + 'px;'
+              return 500 + 'px';
             }
           })
-          .attr('x', function(d) {
+          .style('width', function(d) {
             if (d['line_polarity'] < 0) {
-              return 500 - (Math.abs(d['line_polarity'])*100) }
-            else {
-              return 500
+              console.log(d); return Math.abs(d['line_polarity'])*100 + 'px';
+            } else {
+              return d['line_polarity']*100 + 'px';
             }
           })
           .attr('y', function(d, i) { return i })
