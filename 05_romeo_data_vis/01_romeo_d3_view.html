@@ -3,21 +3,39 @@
   <head>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="./romeo_sentiment_array.js"></script>
+    <style>
+    .chart div {
+        font: 10px sans-serif;
+        background-color: steelblue;
+        text-align: right;
+        padding: 3px;
+        margin: 1px;
+        color: white;
+    }
+    </style>
   </head>
   <body>
     <p>romeo sentiment graph</p>
-    <svg width="1000" height="10000"></svg>
+    <div class=chart>
+    </div>
   </body>
   <script>
       var baseline = 500;
       var current_scene = '';
-      d3.
-        select("body").
-        select("svg").
-        selectAll('rect').
-        data(romeo_data).
-        enter()
-          .append("rect")
+      d3
+        .select("body")
+        .select(".chart")
+        .selectAll('div')
+        .data(romeo_data)
+        .enter()
+          .append("div")
+          .style('width', function(d) {
+            if (d['line_polarity'] < 0) {
+              return Math.abs(d['line_polarity'])*100 + 'px;'
+            } else {
+              return d['line_polarity']*100 + 'px;'
+            }
+          })
           .attr('x', function(d) {
             if (d['line_polarity'] < 0) {
               return 500 - (Math.abs(d['line_polarity'])*100) }
@@ -27,26 +45,7 @@
           })
           .attr('y', function(d, i) { return i })
           .attr('height', '1')
-          .attr('width', function(d, i) { 
-            if (d['line_polarity'] < 0) {
-              return Math.abs(d['line_polarity'])*100 
-            } else {
-              return d['line_polarity']*100
-            }
-          })
-          .style('fill', function(d) {
-            if (d['act'] == 'ACT I') {
-              return 'red'
-            } else if (d['act'] == 'ACT II') {
-              return 'blue'
-            } else if (d['act'] == 'ACT III') {
-              return 'green'
-            } else if (d['act'] == 'ACT IV') {
-              return 'yellow'
-            } else if (d['act'] == 'ACT V') {
-              return 'orange'
-            }
-          })
+          .style('fill', 'blue')
   ;
 
   </script>
