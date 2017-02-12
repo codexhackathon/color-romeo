@@ -5,12 +5,12 @@
     <script src="./romeo_sentiment_array.js"></script>
     <style>
     .chart div {
-        font: 10px sans-serif;
         background-color: steelblue;
-        text-align: right;
-        padding: 3px;
-        margin: 1px;
         color: white;
+        font: 10px sans-serif;
+        margin: 1px;
+        padding: 3px;
+        text-align: right;
     }
     </style>
   </head>
@@ -38,14 +38,11 @@
           })
           .style('width', function(d) {
             if (d['line_polarity'] < 0) {
-              console.log(d); return Math.abs(d['line_polarity'])*100 + 'px';
+              return Math.abs(d['line_polarity'])*100 + 'px';
             } else {
               return d['line_polarity']*100 + 'px';
             }
           })
-          .attr('y', function(d, i) { return i })
-          .attr('height', '1')
-          .style('fill', 'blue')
   ;
 
   </script>

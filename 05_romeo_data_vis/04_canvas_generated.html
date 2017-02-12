@@ -13,8 +13,17 @@
     var canvas = document.getElementById('myCanvas');
     var context = canvas.getContext('2d');
     var count = 0;
+    var act = '';
+    var scene = '';
     for (line of romeo_data) {
       count += 1;
+      if (line['act'] != act) {
+        context.beginPath();
+        context.rect(1, count, 1000, 10);
+        context.fill_style = 'red';
+        context.fill();
+        act = line['act']
+      };
       var height = 1;
       var width = Math.abs(line['line_polarity']) * 100;
       var start_position = (function(line) {
@@ -25,7 +34,6 @@
         };
       }(line));
       context.beginPath();
-      console.log(start_position, count, width, 1);
       context.rect(start_position, count, width, 1);
       context.fillStyle = 'blue';
       context.fill();

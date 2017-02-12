@@ -10,6 +10,7 @@
   </body>
   <script>
       var baseline = 500;
+      var current_scene = '';
       d3.
         select("body").
         select("svg").
@@ -19,15 +20,33 @@
           .append("rect")
           .attr('x', function(d) {
             if (d['line_polarity'] < 0) {
-              return 500 - (d['line_polarity']*10) }
+              return 500 - (Math.abs(d['line_polarity'])*100) }
             else {
               return 500
             }
           })
           .attr('y', function(d, i) { return i })
           .attr('height', '1')
-          .attr('width', function(d, i) { return Math.abs(d['line_polarity'])*10 })
-          .style('fill', 'blue')
+          .attr('width', function(d, i) { 
+            if (d['line_polarity'] < 0) {
+              return Math.abs(d['line_polarity'])*100 
+            } else {
+              return d['line_polarity']*100
+            }
+          })
+          .style('fill', function(d) {
+            if (d['act'] == 'ACT I') {
+              return 'red'
+            } else if (d['act'] == 'ACT II') {
+              return 'blue'
+            } else if (d['act'] == 'ACT III') {
+              return 'green'
+            } else if (d['act'] == 'ACT IV') {
+              return 'yellow'
+            } else if (d['act'] == 'ACT V') {
+              return 'orange'
+            }
+          })
   ;
 
   </script>
