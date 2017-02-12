@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="./romeo_sentiment_array.js"></script>
+  </head>
+  <body>
+    <p>romeo sentiment graph</p>
+    <svg id='mySvg' width=1000 height=5000>
+      <rect width='1000' height='1' id='act1' style='fill:red' />
+    </svg>
+  </body>
+  <script>
+    var svg = document.getElementById('mySvg');
+    var count = 0;
+    var act = '';
+    var scene = '';
+    for (line of romeo_data) {
+      count += 1;
+      if (line['act'] != act) {
+        con.beginPath();
+        context.rect(1, count, 1000, 10);
+        context.fill_style = 'red';
+        context.fill();
+        act = line['act']
+      };
+      var height = 1;
+      var width = Math.abs(line['line_polarity']) * 100;
+      var start_position = (function(line) {
+        if (line['line_polarity'] < 0) {
+          return 500 - width;
+        } else {
+          return 500;
+        };
+      }(line));
+      context.beginPath();
+      context.rect(start_position, count, width, 1);
+      context.fillStyle = 'blue';
+      context.fill();
+    }
+
+  </script>
+</html>
