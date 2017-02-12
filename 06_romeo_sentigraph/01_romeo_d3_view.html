@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="./romeo_sentiment_array.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #F5F5F5;
+        }
+
+        .nav {
+            position: fixed;
+            width: 100%;
+            height: auto;
+            max-height: 10%;
+            left: 0;
+            top: 0;
+            display: block;
+            background: rgb(27, 27, 27);
+            color: white;
+            padding: 10px;
+        }
+
+        .nav p {
+            font-size: 4vh;
+            font-weight: 700;
+            line-height: 0;
+            vertical-align: middle;
+        }
+
+        .chart {
+            margin-top: 15vh;
+        }
+
+        .chart div {
+            font: 10px sans-serif;
+            background-color: steelblue;
+            text-align: right;
+            padding: 3px;
+            margin: 1px;
+            color: transparent;
+            transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+        }
+
+        .book {
+            max-width: 50%;
+            max-height: 80%;
+            width: 20%;
+            height: 50%;
+            position: fixed;
+            top: 100px;
+            bottom: 0;
+            right: 10px;
+            display: block;
+            transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+            margin: 3%;
+            z-index: 3;
+            background-color: rgb(123, 55, 140);
+            color: white;
+            text-align: center;
+        }
+
+        .book h3 {
+            font-weight: 700;
+            font-size: 3rem;
+            transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+        }
+
+        .book h2 {
+            line-height: 0;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+        }
+
+        .book:hover {
+            transform: scale(1.2);
+            background-color: rgb(34, 34, 34);
+            cursor: pointer;
+        }
+
+        .book:hover h2 {
+            opacity: 1;
+        }
+
+        .book:hover h3 {
+            opacity: 0;
+        }
+
+        .info {
+            max-width: 90%;
+            max-height: 15%;
+            width: auto;
+            height: auto;
+            position: fixed;
+            bottom: 0;
+            right: 10px;
+            padding: 20px;
+            display: block;
+            transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+            margin: 3%;
+            z-index: 3;
+            text-align: center;
+            background-color: white;
+        }
+
+        .info>* {
+            vertical-align: middle;
+        }
+
+        .chart div>* {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .chart div:hover {
+            box-shadow:0px 0px 0px 10px rgb(54, 225, 255) inset;
+            background-color: rgb(54, 225, 255);
+        }
+
+        .chart div:hover .info {
+            width: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class=nav>
+        <p>Sentigraph</p>
+    </div>
+    <div class=chart>
+    </div>
+    <div class=book>
+        <h3>ROMEO & JULIET</h3>
+        <h2>Select Book</h2>
+    </div>
+    <div id=info class=info>
+    </div>
+</body>
+
+<script>
+    var baseline = 500;
+    var current_scene = '';
+    d3
+        .select("body")
+        .select(".chart")
+        .selectAll('div')
+        .data(romeo_data)
+        .enter()
+        .append("div")
+        .style('margin-left', function(d) {
+            if (d['line_polarity'] < 0) {
+                return 500 - (Math.abs(d['line_polarity']) * 100) + 'px';
+            } else {
+                return 500 + 'px';
+            }
+        })
+        .style('width', function(d) {
+            if (d['line_polarity'] < 0) {
+                console.log(d);
+                return Math.abs(d['line_polarity']) * 100 + 'px';
+            } else {
+                return d['line_polarity'] * 100 + 'px';
+            }
+        })
+        .style('background-color', function(d) {
+            if (d['line_polarity'] < 0) {
+                return 'rgb(236, 55, 55)';
+            }
+            else if (d['line_polarity'] == 0){
+                return 'black';
+            }
+            else {
+                return 'steelblue';
+            }
+        })
+        .attr('onmouseover', 'displayInfo(this)')
+        .attr('onmouseout', 'deleteInfo()')
+        .attr('y', function(d, i) {
+            return i
+        })
+        .style('fill', 'blue')
+        .style('height', '10px')
+        .html(function(d) {
+            return '<p><big>' + d['act'] + ', ' + d['scene'] + '</big><br/><br/><b>' + d['speaker'] + ':</b> ' + d['line'] + '</p>'
+        });
+
+
+    function displayInfo(x) {
+        var box = document.getElementById('info');
+        var text = document.createElement('p');
+        text.innerHTML = x.innerHTML
+        text.id = 'current';
+        box.appendChild(text);
+    }
+
+    function deleteInfo() {
+        var box = document.getElementById('info');
+        var text = document.getElementById('current');
+        box.removeChild(text);
+    }
+</script>
+
+</html>
