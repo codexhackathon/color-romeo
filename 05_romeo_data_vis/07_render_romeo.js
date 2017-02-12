@@ -5,11 +5,15 @@ for (act of [1,2,3,4,5]) {
 }
 var linecount = 0;
 var colorscheme = colorbrewer.Paired[12];
+var characterColor = {};
 for (line of romeo_data) {
   linecount++;
   var rect = draw.rect(100, 1).attr({ fill: 'blue' });
   rect.move(500, linecount);
-  rect.
+  if (line['speaker'] in characterColor) {
+    characterColor[line['speaker']]
+  }
+  rect.fill(
   var act = line['act'];
   console.log(act);
 }

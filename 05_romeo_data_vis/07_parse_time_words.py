@@ -11,7 +11,7 @@ def parse_xml():
     acts = root.findall('ACT')
     romeo_array = []
     for act in acts:
-        for scene in act.findall('SCENE'):
+        mor scene in act.findall('SCENE'):
             for speech in scene.findall('SPEECH'):
                 for line in speech.findall('LINE'):
                     line_text = ''
